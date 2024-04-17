@@ -1,1 +1,1 @@
-npm install or npm i
+npm install and run npm start
