@@ -24,7 +24,10 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.x20surya.PoolIt"
+      "package": "com.x20surya.PoolIt",
+      "config" : {
+        "googleMapsApiKey" : "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg"
+      }
     },
     "web": {
       "bundler": "metro",

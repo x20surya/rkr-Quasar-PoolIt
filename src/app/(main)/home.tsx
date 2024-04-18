@@ -2,6 +2,8 @@ import { Button, Text, View } from "react-native";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import axios from "axios";
 
 export default function HomeScreen(){
    
@@ -14,11 +16,14 @@ export default function HomeScreen(){
           console.log("user signed out");
           nav.replace("(auth)");
         })
-      }
+    }
+
+    
 
   return(
-    <View>
+    <View style={{flex:1}}>
         <Text style={{color:"white"}}>SYSTEM</Text>
+        
         <Button title="sign out" onPress={signOut} />
     </View>
   )

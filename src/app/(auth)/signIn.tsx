@@ -15,6 +15,7 @@ import {
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import auth from "@react-native-firebase/auth";
 import { Link } from "expo-router";
+import axios from "axios";
 
 export default function Login () {
   const [email, setEmail] = useState<string | undefined>();
@@ -23,6 +24,7 @@ export default function Login () {
   const nav = useNavigation<NativeStackNavigationProp<any>>();
 
   const goToMainFlow = async () => {
+    
     if(email && password) {
         try {
 

@@ -14,18 +14,26 @@ import {
   import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
   import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
   import db from "@react-native-firebase/database";
+  import axios from 'axios';
   
   export default function TabOneScreen() {
   
     const [name, setName] = useState<string | undefined>();
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
-  
+    const [phone, setPhone] = useState<string | undefined>();
+
     const nav = useNavigation<NativeStackNavigationProp<any>>();
   
     const createProfile = async (response: FirebaseAuthTypes.UserCredential) => {
       // Create Profile Query Here
       db().ref(`/users/${response.user.uid}`).set({name});
+      await axios.post("http://192.168.29.196:3000/login/",{
+            phone:"23232323",
+            email:"dummy@gmail.com"
+          })
+          .then((r)=>{console.log(r.data)})
+          .catch((e)=>{console.log(e)})
       console.log(response.user.uid);
     };
   
@@ -40,10 +48,9 @@ import {
   
           if(response.user){
             await createProfile(response);
+
             nav.replace("(tabs)");
           }
-  
-  
   
         } catch(e){
           Alert.alert("oops");
@@ -72,6 +79,14 @@ import {
                 value={email}
                 onChangeText={setEmail}
                 inputMode="email"
+                autoCapitalize="none"
+              />
+              <TextInput
+                style={styles.loginTextField}
+                placeholder="Phone Number"
+                keyboardType='numeric'
+                value={phone}
+                onChangeText={setPhone}
                 autoCapitalize="none"
               />
               <TextInput
