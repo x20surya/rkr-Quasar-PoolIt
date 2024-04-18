@@ -1,4 +1,7 @@
-npm install and run npm start
+npm install or npx expo install
+to run
+npx expo start --dev-client
+
 # Quasar Hackathon Project
 ## Carpooling App
 ## PoolIt
