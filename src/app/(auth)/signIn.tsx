@@ -10,6 +10,7 @@ import {
   Keyboard,
   Alert,
   Button,
+  Dimensions
 } from "react-native";
 
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
@@ -47,12 +48,13 @@ export default function Login () {
   };
 
   return (
-    <Pressable style={styles.contentView} onPress={Keyboard.dismiss}>
+    <Pressable style={styles.bigContainer} onPress={Keyboard.dismiss}>
+      
+      <View style={styles.titleContainer}>
+        <Text style={styles.titleText}>Sign In</Text>
+      </View>
       <SafeAreaView style={styles.contentView}>
         <View style={styles.container}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.titleText}>Sign In</Text>
-          </View>
           <View style={styles.mainContent}>
             <TextInput
               style={styles.loginTextField}
@@ -70,12 +72,9 @@ export default function Login () {
               secureTextEntry
             />
           </View>
-          <Button title="Sign In" onPress={goToMainFlow} />
-          <Link href={'/signUp'} asChild>
-
-          <Button
-            title="Sign Up"
-          />
+          <Pressable onPress={goToMainFlow} style={styles.signInButton}><Text style={styles.signInText}>Sign in</Text></Pressable>
+          <Link href={'/signUp'} >
+            <Text style={styles.linkText}>No Account? SignUp Here</Text>
           
           </Link>
         </View>
@@ -85,33 +84,70 @@ export default function Login () {
 };
 
 const styles = StyleSheet.create({
-  contentView: {
+  bigContainer: {
     flex: 1,
-    backgroundColor: "white",
+    justifyContent:'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(240, 240, 230, 1)'
+  },
+  contentView: {
+    backgroundColor:'white',
+    width: '95%',
+    aspectRatio: '1/0.7',
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'rgba(52, 52, 52, 0.5)',
+  
   },
   container: {
+    width: '100%',
     flex: 1,
-    marginHorizontal: 50,
-    backgroundColor: "white",
-    paddingTop: 20,
+    flexDirection: "column",
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   titleContainer: {
-    flex: 1.2,
-    justifyContent: "center",
+    height:Dimensions.get('window').height *0.09 ,
+
   },
   titleText: {
-    fontSize: 45,
-    textAlign: "center",
-    fontWeight: "200",
-  },
-  loginTextField: {
-    borderBottomWidth: 1,
-    height: 60,
-    fontSize: 30,
-    marginVertical: 10,
-    fontWeight: "300",
+    fontSize: 40,
+    color: 'rgba(77, 77, 77, 1)',
+    
+    margin: 0,
   },
   mainContent: {
-    flex: 6,
+    
+    margin: 0,
   },
+  loginTextField: {
+    backgroundColor: 'rgba(238, 238, 238, 1)',
+    padding: 0,
+    height: '30%',
+    width: Dimensions.get('window').width*0.85,
+    margin:15,
+    paddingLeft: 15,
+    borderRadius: 5,
+    marginBottom: 0,
+  },
+  signInButton: {
+    backgroundColor: 'rgba(158, 255, 75, 1)',
+    height: Dimensions.get('window').height *0.06,
+    width: Dimensions.get('window').width*0.65 ,
+    justifyContent: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    shadowColor: 'black',
+    shadowRadius: 50,
+    margin: 0,
+  },
+  signInText: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '500'
+
+  },
+  linkText: {
+    color: 'blue'
+  }
 });
