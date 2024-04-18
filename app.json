@@ -39,6 +39,12 @@
       "@react-native-firebase/app",
       [
         "expo-build-properties"
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Allow PoolIt to use your location."
+        }
       ]
     ],
     "experiments": {
