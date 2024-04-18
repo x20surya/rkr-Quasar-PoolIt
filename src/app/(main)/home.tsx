@@ -17,13 +17,10 @@ export default function HomeScreen(){
           nav.replace("(auth)");
         })
     }
-
-    
-
   return(
     <View style={{flex:1}}>
         <Text style={{color:"white"}}>SYSTEM</Text>
-        
+        <MapView style={{width:"100%",height:"60%"}} />
         <Button title="sign out" onPress={signOut} />
     </View>
   )
