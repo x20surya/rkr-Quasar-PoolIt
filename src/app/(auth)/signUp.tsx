@@ -40,6 +40,7 @@ import {
   
           if(response.user){
             await createProfile(response);
+            nav.replace("(tabs)");
           }
   
   
