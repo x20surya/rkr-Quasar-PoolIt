@@ -18,7 +18,8 @@ import {
   
   export default function TabOneScreen() {
   
-    const [name, setName] = useState<string | undefined>();
+    const [firstname, setFirstName] = useState<string | undefined>();
+    const [lastname, setLastName] = useState<string | undefined>();
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
     const [phone, setPhone] = useState<string | undefined>();
@@ -29,8 +30,7 @@ import {
       // Create Profile Query Here
       db().ref(`/users/${response.user.uid}`).set({name});
       await axios.post("http://192.168.29.196:3000/login/",{
-            phone:"23232323",
-            email:"dummy@gmail.com"
+
           })
           .then((r)=>{console.log(r.data)})
           .catch((e)=>{console.log(e)})
@@ -70,8 +70,14 @@ import {
               <TextInput
                 style={styles.loginTextField}
                 placeholder="Name"
-                value={name}
-                onChangeText={setName}
+                value={firstname}
+                onChangeText={setFirstName}
+              />
+              <TextInput
+                style={styles.loginTextField}
+                placeholder="Name"
+                value={lastname}
+                onChangeText={setLastName}
               />
               <TextInput
                 style={styles.loginTextField}
