@@ -3,9 +3,10 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
-
 import { useColorScheme } from '@/src/components/useColorScheme';
+import { UserLocationContext } from '../providers/UserLocationContext';
+import * as Location from 'expo-location';
+import { useEffect, useState } from "react";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -47,14 +48,40 @@ export default function RootLayout() {
 function RootLayoutNav() {
   const colorScheme = useColorScheme();
 
+  const [location, setLocation] = useState<Object>({});
+    const [errorMsg, setErrorMsg] = useState<string>("");
+
+    useEffect(() => {
+        (async () => {
+          
+          let { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            setErrorMsg('Permission to access location was denied');
+            return;
+          }
+    
+          let location = await Location.getCurrentPositionAsync({});
+          setLocation(location);
+        })();
+      }, []);
+
+      let text = 'Waiting..';
+      if (errorMsg) {
+        text = errorMsg;
+      } else if (location) {
+        text = JSON.stringify(location);
+      }
+
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <UserLocationContext.Provider value={{location,setLocation}}> 
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(main)" options={{headerShown : false}} />
       </Stack>
+      </UserLocationContext.Provider>
     </ThemeProvider>
   );
 }
