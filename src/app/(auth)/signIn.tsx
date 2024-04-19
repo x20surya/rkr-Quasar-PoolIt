@@ -88,30 +88,35 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent:'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(240, 240, 230, 1)'
+    backgroundColor: 'white'
   },
   contentView: {
     backgroundColor:'white',
     width: '95%',
-    aspectRatio: '1/0.7',
+    aspectRatio: '1/0.8',
     borderRadius: 20,
-    borderWidth: 1,
-    borderColor: 'rgba(52, 52, 52, 0.5)',
+    borderWidth: 2,
+    borderColor: 'rgba(240, 240, 230, 1)',
   
   },
   container: {
-    width: '100%',
     flex: 1,
     flexDirection: "column",
-    justifyContent: 'space-around',
+    // justifyContent: 'space-around',
     alignItems: 'center',
   },
   titleContainer: {
-    height:Dimensions.get('window').height *0.09 ,
-
+    alignItems:"center",
+    justifyContent:"center",
+    height:Dimensions.get('window').height *0.08,
+    width:Dimensions.get('window').width *0.9,
+    borderWidth:3,
+    borderColor:"#77B0AA",
+    borderRadius:40,
+    marginBottom:20,
   },
   titleText: {
-    fontSize: 40,
+    fontSize: 30,
     color: 'rgba(77, 77, 77, 1)',
     
     margin: 0,
@@ -123,31 +128,29 @@ const styles = StyleSheet.create({
   loginTextField: {
     backgroundColor: 'rgba(238, 238, 238, 1)',
     padding: 0,
-    height: '30%',
+    height: '28%',
     width: Dimensions.get('window').width*0.85,
     margin:15,
     paddingLeft: 15,
-    borderRadius: 5,
+    borderRadius: 20,
     marginBottom: 0,
   },
   signInButton: {
-    backgroundColor: 'rgba(158, 255, 75, 1)',
+    backgroundColor: '#77B0AA',
     height: Dimensions.get('window').height *0.06,
     width: Dimensions.get('window').width*0.65 ,
     justifyContent: 'center',
-    borderRadius: 10,
-    borderWidth: 1,
-    shadowColor: 'black',
-    shadowRadius: 50,
-    margin: 0,
+    borderRadius: 25,
+    marginBottom:15,
   },
   signInText: {
     textAlign: 'center',
     fontSize: 20,
-    fontWeight: '500'
-
+    fontWeight: '500',
+    color:"white",
   },
   linkText: {
-    color: 'blue'
+    color: 'black',
+    fontSize:15,
   }
 });

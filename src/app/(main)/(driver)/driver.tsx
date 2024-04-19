@@ -1,5 +1,5 @@
 import { Link, useNavigation } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
@@ -8,6 +8,8 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewStyle from "../../../constants/MapViewStyle.json"
 import DriverMap from "@/src/components/DriverMap";
+import axios from "axios";
+import StartRide from "@/src/components/StartRide";
 
 export default function DriverScreen() {
   const [state, setState] = useState({
@@ -58,7 +60,18 @@ export default function DriverScreen() {
   async function putCurrentLocation() {
     let location = await Location.getCurrentPositionAsync({});
 
-    console.log("current location", location.coords);
+    setState({
+      ...state,
+      currentLocation: {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      },
+    });
+  }
+
+  async function getCurrentLocation() {
+    let location = await Location.getCurrentPositionAsync({});
+
 
     setState({
       ...state,
@@ -81,29 +94,34 @@ export default function DriverScreen() {
     });
   }
 
+  async function fetchPassengers(){
+
+    await axios.post("http://192.168.29.196:3000/getpassenger/",{
+        latitude : state.currentLocation.latitude,
+        longitude : state.currentLocation.longitude,
+        lat : state.destinationCords.latitude,
+        long: state.destinationCords.longitude
+      })
+      .then((r)=>{console.log(r.data)})
+      .catch((e)=>{console.log(e)})
+}
+
 
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginTop:50}}>
       <ScrollView 
       style={{ backgroundColor: "white" , flex:1}}
       keyboardShouldPersistTaps="handled"
       >
-        <GooglePlacesAutocomplete
-          placeholder="Enter Your Destination"
-          onPress={fetchDestination}
-          fetchDetails={true}
-          query={{
-            key: "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg",
-            language: "en",
-          }}
-        />
+      <StartRide fetchDestination={fetchDestination} />
         
       </ScrollView>
       <DriverMap latitude = {state.destinationCords.latitude} longitude = {state.destinationCords.longitude} />
       <Link href={"/passengerFinder"} asChild>
-      <Button title="Find Passenger" />
+      <Button title="Find Passenger page" />
       </Link>
+      <Button title="Find Passenger" onPress={fetchPassengers}/>
     </View>
   );
 }
