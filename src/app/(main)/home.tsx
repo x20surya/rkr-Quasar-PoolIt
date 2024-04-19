@@ -5,15 +5,13 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import axios from "axios";
-import MapViewStyle from "../../constants/MapViewStyle.json";
+
 import * as Location from "expo-location";
 import { useContext, useEffect, useRef, useState, useMemo } from "react";
-import MapViewDirections from "react-native-maps-directions";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { gestureHandlerRootHOC, GestureHandlerRootView } from "react-native-gesture-handler";
-
-
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { MapPassenger } from "@/src/components/MapPassenger";
 
 
 
@@ -32,7 +30,7 @@ export default function HomeScreen() {
     },
   });
 
-  const mapRef = useRef();
+  
 
   const { pickupCords, droplocationCors } = state;
 
@@ -125,49 +123,7 @@ const snapPoints= useMemo(()=>['25%', '50%', '75%', '100%'],[])
 
      (
       <GestureHandlerRootView style={{flex:1}}>
-        <MapView
-          ref={mapRef}
-          style={{ width: "100%", height: "100%", flex:1, }}
-          provider={PROVIDER_GOOGLE}
-          customMapStyle={MapViewStyle}
-          initialRegion={{
-            latitude: 30.7333,
-            longitude: 76.7794,
-            latitudeDelta: 0.01,
-            longitudeDelta: 0.01,
-          }}
-        >
-          <Marker
-            coordinate={{
-              latitude: state.droplocationCors.latitude,
-              longitude: state.droplocationCors.longitude,
-            }}
-          />
-          <Marker
-            coordinate={{
-              latitude: state.pickupCords.latitude,
-              longitude: state.pickupCords.longitude,
-            }}
-          />
-          <MapViewDirections
-            origin={pickupCords}
-            destination={droplocationCors}
-            apikey="AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg"
-            strokeWidth={5}
-            strokeColor="blue"
-            optimizeWaypoints={true}
-            onReady={(result) => {
-              mapRef.current.fitToCoordinates(result.coordinates, {
-                edgePadding: {
-                  right: 30,
-                  bottom: 300,
-                  left: 30,
-                  top: 300,
-                },
-              });
-            }}
-          />
-        </MapView>
+        <MapPassenger dropLat={state.droplocationCors.latitude} dropLong={state.droplocationCors.longitude} pickLat={state.pickupCords.latitude} pickLong={state.pickupCords.longitude}/>
 
         <BottomSheet ref={bottomSheetRef} index= {1} snapPoints={snapPoints}>
         <ScrollView 
