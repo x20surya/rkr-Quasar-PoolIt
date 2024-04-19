@@ -7,9 +7,12 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import axios from "axios";
 import MapViewStyle from "../../constants/MapViewStyle.json";
 import * as Location from "expo-location";
-import { useContext, useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState, useMemo } from "react";
 import MapViewDirections from "react-native-maps-directions";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import BottomSheet from "@gorhom/bottom-sheet";
+
+const snapPoints= useMemo(()=>['25%', '50%', '70%'],[])
 
 export default function HomeScreen() {
   const [state, setState] = useState({
@@ -99,29 +102,7 @@ export default function HomeScreen() {
   return (
      (
       <View style={{flex:1 }}>
-        <ScrollView 
-        style={{backgroundColor:'white'}}
-        keyboardShouldPersistTaps="handled"
-        >
-        <GooglePlacesAutocomplete
-          placeholder="Enter Pick Up Location"
-          onPress={fethPickUp}
-          fetchDetails={true}
-          query={{
-            key: "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg",
-            language: "en",
-          }}
-        />
-        <GooglePlacesAutocomplete
-          placeholder="Enter Destination Location"
-          onPress={fethDrop}
-          fetchDetails={true}
-          query={{
-            key: "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg",
-            language: "en",
-          }}
-        />
-        </ScrollView>
+        
         <MapView
           ref={mapRef}
           style={{ width: "100%", height: "100%", flex:1 }}
@@ -165,8 +146,34 @@ export default function HomeScreen() {
             }}
           />
         </MapView>
-        <Button title="use current location" onPress={putCurrentLocation} />
-        <Button title="sign out" onPress={signOut} />
+
+        {/* <ScrollView 
+        style={{backgroundColor:'white'}}
+        keyboardShouldPersistTaps="handled"
+        >
+        <GooglePlacesAutocomplete
+          placeholder="Enter Pick Up Location"
+          onPress={fethPickUp}
+          fetchDetails={true}
+          query={{
+            key: "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg",
+            language: "en",
+          }}
+        />
+        <GooglePlacesAutocomplete
+          placeholder="Enter Destination Location"
+          onPress={fethDrop}
+          fetchDetails={true}
+          query={{
+            key: "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg",
+            language: "en",
+          }}
+        />
+        </ScrollView> */}
+        <BottomSheet snapPoints={snapPoints}>
+          <Text>Awsome</Text>
+        </BottomSheet>
+        {/* */}
       </View>
     )
   );
