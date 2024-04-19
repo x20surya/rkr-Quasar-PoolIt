@@ -1,4 +1,4 @@
-import { Button, Text, View, Dimensions, Modal } from "react-native";
+import { Button, Text, View, Dimensions, Modal, Alert } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
@@ -20,7 +20,11 @@ import { MapPassenger } from "@/src/components/MapPassenger";
 
 export default function HomeScreen() {
 
+  //true if Ride is booked & but driver may or may not be found
+  const [validForBooking, setValidity]= useState(false);
 
+  //true if Ride is booked & driver is found
+  const [rideBooked, setBookingStatus]= useState(false);
 
   
   const [state, setState] = useState({
@@ -72,15 +76,6 @@ const snapPoints= useMemo(()=>['25%', '50%', '75%', '100%'],[])
   // )})
 
   const nav = useNavigation<NativeStackNavigationProp<any>>();
-
-  function signOut() {
-    auth()
-      .signOut()
-      .then(() => {
-        console.log("user signed out");
-        nav.replace("(auth)");
-      });
-  }
 
   function fetchPickUp (data,details){
     console.log("run");
@@ -172,9 +167,31 @@ let nm2= state.pickupCords.name
     
   }
 
-  console.log("pickupcords", pickupCords);
-  console.log("dropcords", droplocationCors);
-  console.log("cu", currentLocation);
+  // console.log("pickupcords", pickupCords);
+  // console.log("dropcords", droplocationCors);
+  // console.log("cu", currentLocation);
+
+  const confirmBooking = ()=>
+{
+  if(state.droplocationCors.name=="Enter Drop Off Location"){
+    Alert.alert('Bhosdike', 'Destination Daal', [
+      {
+        text: 'Ok Papa',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      }])
+  }else{
+    setValidity(true)
+    Alert.alert('Nice', 'Ride Booked', [
+      {
+        text: 'Ok Papa',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      }])
+
+  }
+}
+
   return (
 
      (
@@ -185,7 +202,7 @@ let nm2= state.pickupCords.name
         pickLat={state.pickupCords.latitude==0 ? ((Object.keys(currentLocation).length)>0? currentLocation.coords.latitude:0 ):state.pickupCords.latitude}
         pickLong={state.pickupCords.longitude==0 ? ((Object.keys(currentLocation).length)>0? currentLocation.coords.longitude:0 ):state.pickupCords.longitude}/>
 
-        <BottomSheet ref={bottomSheetRef} index= {1} snapPoints={snapPoints}>
+        {!validForBooking && !rideBooked && <BottomSheet ref={bottomSheetRef} index= {1} snapPoints={snapPoints}>
         <ScrollView 
           style={{backgroundColor:'white'}}
           keyboardShouldPersistTaps="handled"
@@ -208,12 +225,16 @@ let nm2= state.pickupCords.name
               language: "en",
             }}
           />
+          <Button title="use current location" onPress={putCurrentLocation} />
           </ScrollView>
-      </BottomSheet>
+      </BottomSheet>}
+      {validForBooking && !rideBooked && <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
+            <Text>Finding Drivers</Text>
+        </BottomSheet>}
+      <Button onPress={confirmBooking} title="Confirm Booking"/>
         {/* <Button title="close" onPress={handleClosePress}/>
         <Button title="open" onPress={handleOpenPress}/> */}
-        <Button title="use current location" onPress={putCurrentLocation} />
-        <Button title="sign out" onPress={signOut} />
+        
       </GestureHandlerRootView>
     )
   );

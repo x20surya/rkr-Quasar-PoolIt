@@ -70,7 +70,7 @@ export function MapPassenger(props){
             longitude: pickLong,
             }}
           />
-          <MapViewDirections
+          {dropLat!=0 && <MapViewDirections
             origin={pickupCords}
             destination={droplocationCors}
             apikey="AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg"
@@ -87,7 +87,7 @@ export function MapPassenger(props){
                 },
               });
             }}
-          />
+          />}
         </MapView>
         
     )
