@@ -1,4 +1,4 @@
-import { Button, Text, View, Dimensions } from "react-native";
+import { Button, Text, View, Dimensions, Modal } from "react-native";
 import { ScrollView } from "react-native-virtualized-view";
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
@@ -11,8 +11,14 @@ import { useContext, useEffect, useRef, useState, useMemo } from "react";
 import MapViewDirections from "react-native-maps-directions";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import BottomSheet from "@gorhom/bottom-sheet";
+import { gestureHandlerRootHOC, GestureHandlerRootView } from "react-native-gesture-handler";
 
-const snapPoints= useMemo(()=>['25%', '50%', '70%'],[])
+
+
+
+
+
+
 
 export default function HomeScreen() {
   const [state, setState] = useState({
@@ -40,6 +46,22 @@ export default function HomeScreen() {
   //   return ()=>clearInterval(interval);
   // })
 
+    const bottomSheetRef= useRef<BottomSheet>(null)
+  
+    const handleClosePress= () =>bottomSheetRef.current?.close()
+    const handleOpenPress= () =>bottomSheetRef.current?.expand()
+const snapPoints= useMemo(()=>['25%', '50%', '75%', '100%'],[])
+  // const BottomSheetComp= gestureHandlerRootHOC(()=> {
+  //   
+  
+
+  
+  //   return (
+    
+  
+    
+  
+  // )})
 
   const nav = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -52,7 +74,7 @@ export default function HomeScreen() {
       });
   }
 
-  function fethPickUp (data,details){
+  function fetchPickUp (data,details){
     console.log("run");
     const lat = details.geometry.location.lat
     const lng = details.geometry.location.lng
@@ -83,7 +105,7 @@ export default function HomeScreen() {
 
 
 
-  function fethDrop (data,details){
+  function fetchDrop (data,details){
     console.log("run");
     const lat = details.geometry.location.lat
     const lng = details.geometry.location.lng
@@ -100,12 +122,12 @@ export default function HomeScreen() {
   console.log("dropcords", droplocationCors);
 
   return (
+
      (
-      <View style={{flex:1 }}>
-        
+      <GestureHandlerRootView style={{flex:1}}>
         <MapView
           ref={mapRef}
-          style={{ width: "100%", height: "100%", flex:1 }}
+          style={{ width: "100%", height: "100%", flex:1, }}
           provider={PROVIDER_GOOGLE}
           customMapStyle={MapViewStyle}
           initialRegion={{
@@ -147,34 +169,36 @@ export default function HomeScreen() {
           />
         </MapView>
 
-        {/* <ScrollView 
-        style={{backgroundColor:'white'}}
-        keyboardShouldPersistTaps="handled"
-        >
-        <GooglePlacesAutocomplete
-          placeholder="Enter Pick Up Location"
-          onPress={fethPickUp}
-          fetchDetails={true}
-          query={{
-            key: "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg",
-            language: "en",
-          }}
-        />
-        <GooglePlacesAutocomplete
-          placeholder="Enter Destination Location"
-          onPress={fethDrop}
-          fetchDetails={true}
-          query={{
-            key: "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg",
-            language: "en",
-          }}
-        />
-        </ScrollView> */}
-        <BottomSheet snapPoints={snapPoints}>
-          <Text>Awsome</Text>
-        </BottomSheet>
-        {/* */}
-      </View>
+        <BottomSheet ref={bottomSheetRef} index= {1} snapPoints={snapPoints}>
+        <ScrollView 
+          style={{backgroundColor:'white'}}
+          keyboardShouldPersistTaps="handled"
+          >
+          <GooglePlacesAutocomplete
+            placeholder="Enter Pick Up Location"
+            fetchDetails={true}
+            onPress={fetchPickUp}
+            query={{
+              key: "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg",
+              language: "en",
+            }}
+          />
+          <GooglePlacesAutocomplete
+            placeholder="Enter Destination Location"
+            fetchDetails={true}
+            onPress={fetchDrop}
+            query={{
+              key: "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg",
+              language: "en",
+            }}
+          />
+          </ScrollView>
+      </BottomSheet>
+        {/* <Button title="close" onPress={handleClosePress}/>
+        <Button title="open" onPress={handleOpenPress}/> */}
+        {/* <Button title="use current location" onPress={putCurrentLocation} />
+        <Button title="sign out" onPress={signOut} /> */}
+      </GestureHandlerRootView>
     )
   );
 }
