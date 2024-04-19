@@ -133,7 +133,6 @@ export default function DriverMap(props) {
 
 
     </MapView>
-    <Button title="fetch passengers" onPress={fetchPassengers} />
     </View>
     
   );

@@ -115,7 +115,7 @@ export default function DriverScreen() {
       keyboardShouldPersistTaps="handled"
       >
       <StartRide fetchDestination={fetchDestination} />
-        
+      
       </ScrollView>
       <DriverMap latitude = {state.destinationCords.latitude} longitude = {state.destinationCords.longitude} />
       <Link href={"/passengerFinder"} asChild>

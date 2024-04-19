@@ -28,15 +28,6 @@ export default function UserProfile(){
         }
     });
 
-    function signOut(){
-        auth()
-        .signOut()
-        .then(()=>{
-          console.log("user signed out");
-          nav.replace("(auth)");
-        })
-      }
-
 
     return(
         <View style={styles.Bigcontainer}>

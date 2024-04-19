@@ -213,7 +213,6 @@ let nm2= state.pickupCords.name
         {/* <Button title="close" onPress={handleClosePress}/>
         <Button title="open" onPress={handleOpenPress}/> */}
         <Button title="use current location" onPress={putCurrentLocation} />
-        <Button title="sign out" onPress={signOut} />
       </GestureHandlerRootView>
     )
   );
