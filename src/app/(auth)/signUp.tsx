@@ -158,7 +158,7 @@ import {
     loginTextField: {
       borderWidth: 2,
       borderRadius:20,
-      borderColor:"'rgba(240, 240, 230, 1)",
+      borderColor:"rgba(240, 240, 230, 1)",
       paddingLeft:15,
       height: 50,
       fontSize: 16,
