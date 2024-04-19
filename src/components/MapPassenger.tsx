@@ -3,36 +3,52 @@ import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewStyle from "../constants/MapViewStyle.json";
 import MapViewDirections from "react-native-maps-directions";
 
-export function MapPassenger({dropLat, dropLong, pickLat, pickLong}){
+export function MapPassenger(props){
 
+    const {dropLat, dropLong, pickLat, pickLong}= props;
     const [state, setState] = useState({
     pickupCords: {
-      latitude:0,
-      longitude:0
+      latitude:pickLat,
+      longitude:pickLong
     },
     droplocationCors: {
-      latitude:0,
-      longitude:0
+      latitude:dropLat,
+      longitude:dropLong
     },
   });
-
-  
+  if(state.pickupCords.latitude!=pickLat && state.pickupCords.longitude!=pickLong){
+    setState({
+        ...state,pickupCords:{
+            latitude: pickLat,
+            longitude : pickLong
+        }
+    })
+  }
+  if(state.droplocationCors.latitude!=dropLat && state.droplocationCors.longitude!=dropLong){
+    setState({
+        ...state,droplocationCors:{
+            latitude: dropLat,
+            longitude : dropLong
+        }
+    })
+  }
 
   const { pickupCords, droplocationCors } = state;
 
   const [currentLocation,setCurrentLocation] = useState({});
 
     const mapRef = useRef();
-    
+    console.log("pickup Map", pickLat,"    ", pickLong)
+    console.log("Drop Map", dropLat,"    ", dropLong)
     return(
         <MapView
           ref={mapRef}
-          style={{ width: "100%", height: "100%", flex:1, }}
+          style={{ width: "100%", height: "75%", flex:1, }}
           provider={PROVIDER_GOOGLE}
           customMapStyle={MapViewStyle}
-          initialRegion={{
-            latitude: 30.7333,
-            longitude: 76.7794,
+          region={{
+            latitude: pickLat,
+            longitude: pickLong,
             latitudeDelta: 0.01,
             longitudeDelta: 0.01,
           }}
@@ -65,14 +81,15 @@ export function MapPassenger({dropLat, dropLong, pickLat, pickLong}){
               mapRef.current.fitToCoordinates(result.coordinates, {
                 edgePadding: {
                   right: 30,
-                  bottom: 300,
+                  bottom: 250,
                   left: 30,
-                  top: 300,
+                  top: 100,
                 },
               });
             }}
           />
         </MapView>
+        
     )
 
 }
