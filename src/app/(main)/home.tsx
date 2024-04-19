@@ -8,7 +8,6 @@ import axios from "axios";
 import MapViewStyle from "../../constants/MapViewStyle.json";
 import * as Location from "expo-location";
 import { useContext, useEffect, useRef, useState } from "react";
-import { UserLocationContext } from "@/src/providers/UserLocationContext";
 import MapViewDirections from "react-native-maps-directions";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
@@ -28,17 +27,16 @@ export default function HomeScreen() {
 
   const { pickupCords, droplocationCors } = state;
 
-  const { location, setLocation } = useContext(UserLocationContext);
+  const [currentLocation,setCurrentLocation] = useState({});
 
-  useEffect(()=>{
-    const interval = setInterval(async ()=>{
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    },10000);
-    return ()=>clearInterval(interval);
-  })
+  // useEffect(()=>{
+  //   const interval = setInterval(async ()=>{
+  //     let location = await Location.getCurrentPositionAsync({});
+  //     setLocation(location);
+  //   },10000);
+  //   return ()=>clearInterval(interval);
+  // })
 
-  console.log(location.coords?.latitude);
 
   const nav = useNavigation<NativeStackNavigationProp<any>>();
 
@@ -64,11 +62,18 @@ export default function HomeScreen() {
     })
   }
 
-  function putCurrentLocation(){
+  async function putCurrentLocation(){
+     
+    let location = await Location.getCurrentPositionAsync({});
+
+    setCurrentLocation(location);
+
+    console.log("current location",currentLocation.coords);
+
     setState({
         ...state,pickupCords:{
-            latitude:location.coords.latitude,
-            longitude : location.coords.longitude
+            latitude: currentLocation.coords.latitude,
+            longitude : currentLocation.coords.longitude
         }
     })
   }
@@ -137,8 +142,8 @@ export default function HomeScreen() {
           />
           <Marker
             coordinate={{
-              latitude: 34.6,
-              longitude: 73.4,
+              latitude: state.pickupCords.latitude,
+              longitude: state.pickupCords.longitude,
             }}
           />
           <MapViewDirections

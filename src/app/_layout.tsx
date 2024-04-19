@@ -4,7 +4,6 @@ import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useColorScheme } from '@/src/components/useColorScheme';
-import { UserLocationContext } from '../providers/UserLocationContext';
 import * as Location from 'expo-location';
 import { useEffect, useState } from "react";
 
@@ -59,9 +58,6 @@ function RootLayoutNav() {
             setErrorMsg('Permission to access location was denied');
             return;
           }
-    
-          let location = await Location.getCurrentPositionAsync({});
-          setLocation(location);
         })();
       }, []);
 
@@ -74,14 +70,14 @@ function RootLayoutNav() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <UserLocationContext.Provider value={{location,setLocation}}> 
+      
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
         <Stack.Screen name="(main)" options={{headerShown : false}} />
       </Stack>
-      </UserLocationContext.Provider>
+      
     </ThemeProvider>
   );
 }
