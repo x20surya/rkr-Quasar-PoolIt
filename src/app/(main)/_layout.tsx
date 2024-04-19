@@ -34,10 +34,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="driver"
+        name="(driver)"
         options={{
           title: 'Driver',
           tabBarIcon: ({ color }) => <TabBarIcon name="car" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="(userProfile)"
+        options={{
+          title: 'User',
+          tabBarIcon: ({ color }) => <TabBarIcon name="user" color={color} />,
         }}
       />
     </Tabs>
