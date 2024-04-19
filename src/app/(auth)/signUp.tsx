@@ -1,11 +1,14 @@
 import { 
     StyleSheet,
+   
     SafeAreaView,
     TextInput,
     Pressable,
     Keyboard,
     Alert,
     Button,
+    Dimensions,
+    
   } from 'react-native';
   import { useNavigation } from "@react-navigation/native";
   
@@ -15,6 +18,7 @@ import {
   import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
   import db from "@react-native-firebase/database";
   import axios from 'axios';
+  import { Link } from 'expo-router';
   
   export default function TabOneScreen() {
   
@@ -69,7 +73,7 @@ import {
             <View style={styles.mainContent}>
               <TextInput
                 style={styles.loginTextField}
-                placeholder="Name"
+                placeholder="Username"
                 value={name}
                 onChangeText={setName}
               />
@@ -97,11 +101,13 @@ import {
                 secureTextEntry
               />
             </View>
-            <Button
-              title="Sign Up"
-              onPress={registerAndGoToMainFlow}
-            />
-            <Button title="Go Back" onPress={nav.goBack} />
+            <View style={styles.buttoncontainer}>
+            <Pressable onPress={registerAndGoToMainFlow} style={styles.signInButton}><Text style={styles.signInText}>Sign Up</Text></Pressable>
+
+            <Link href={'/signIn'}><Text style={styles.Remainder}>Already have an account? SignIn</Text></Link>
+            </View>
+            
+
           </View>
         </SafeAreaView>
       </Pressable>
@@ -112,33 +118,84 @@ import {
     contentView: {
       flex: 1,
       backgroundColor: "white",
+      flexDirection:"column",
+      alignItems:"center",
+      justifyContent:"center",
     },
     container: {
-      flex: 1,
-      marginHorizontal: 50,
-      backgroundColor: "white",
-      paddingTop: 20,
+      alignItems:"center",
+      marginHorizontal:50,
+      backgroundColor: "rgba(256,256,256,0)",
+      marginTop:"40%",
+      height: Dimensions.get('window').height *0.71,
     },
     titleContainer: {
-      flex: 1.2,
+      
+      height:Dimensions.get('window').height *0.08,
+      width:Dimensions.get('window').width *0.85,
+      alignItems:"center",
       justifyContent: "center",
+      backgroundColor:"white",
+      borderWidth:3,
+      borderColor:"#77B0AA",
+      borderRadius:50,
     },
     titleText: {
-      fontSize: 45,
+      fontSize: 30,
       textAlign: "center",
       fontWeight: "200",
+      color:"black",
     },
     loginTextField: {
-      borderBottomWidth: 1,
-      height: 60,
-      fontSize: 30,
+      borderWidth: 2,
+      borderRadius:20,
+      borderColor:"'rgba(240, 240, 230, 1)",
+      paddingLeft:15,
+      height: 50,
+      fontSize: 16,
+      width:"95%",
       marginVertical: 10,
       fontWeight: "300",
-      backgroundColor: "white"
+      color:"black",
+      backgroundColor: "white",
     },
     mainContent: {
-      flex: 6,
-      backgroundColor: "white"
+      height:Dimensions.get('window').height *0.35,
+      width:Dimensions.get('window').width *0.91,
+      padding:10,
+      alignItems:"center",
+      justifyContent:"space-around",
+      backgroundColor: "white",
+      borderWidth:2,
+      borderRadius:30,
+      borderColor:"rgba(240, 240, 230, 1)",
+
+      marginTop:20,
+      marginBottom:20,
     },
+    buttoncontainer:{
+      flexDirection:"column",
+      justifyContent:"center",
+      alignItems:"center",
+      backgroundColor:"white",
+    },
+    signInButton:{
+      
+      alignItems:"center",
+      justifyContent:"center",
+      height:Dimensions.get('window').height *0.06,
+      width:240,
+      backgroundColor:"#77B0AA",
+      margin:6,
+      borderRadius:30,
+    },
+    signInText:{
+      color:"white",
+      fontSize:20,
+    },
+    Remainder:{
+      color:"black",
+      fontSize:16,
+    }
   });
   
