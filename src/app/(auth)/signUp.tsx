@@ -34,15 +34,16 @@ export default function TabOneScreen() {
   const createProfile = async (response: FirebaseAuthTypes.UserCredential) => {
     // Create Profile Query Here
     db().ref(`/users/${response.user.uid}`).set({firstname});
-    await axios.post("http://192.168.29.196:3000/signup",{
-          firstname : firstname,
-          lastname : lastname,
-          email : email,
-          phone: phone,
-        })
-        .then((r)=>{console.log(r.data)})
-        .catch((e)=>{console.log(e)})
-    console.log(response.user.uid);
+    await axios.post("http://192.168.17.226:3000/signup",{
+            uid : response.user.uid,
+            firstname : firstname,
+            lastname : lastname,
+            email : email,
+            phone: phone,
+          })
+          .then((r)=>{console.log(r.data)})
+          .catch((e)=>{console.log(e)})
+      console.log(response.user.uid);
   };
 
   const registerAndGoToMainFlow = async () => {

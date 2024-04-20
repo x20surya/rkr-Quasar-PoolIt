@@ -251,7 +251,7 @@ const bookingConf =async ()=>{
               language: "en",
             }}
           />
-          <Text>Enter Drop Location</Text>
+          <Text style={styles.lableInputField}>Enter Drop Location</Text>
           <GooglePlacesAutocomplete
             placeholder={state.droplocationCors.name}
             fetchDetails={true}
