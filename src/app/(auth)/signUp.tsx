@@ -158,6 +158,9 @@ import {
       fontWeight: "300",
       color:"black",
       backgroundColor: "white",
+      elevation:2,
+      shadowColor:"black",
+      
     },
     mainContent: {
       height:Dimensions.get('window').height *0.35,
@@ -169,9 +172,10 @@ import {
       borderWidth:2,
       borderRadius:30,
       borderColor:"rgba(240, 240, 230, 1)",
-
       marginTop:20,
       marginBottom:20,
+      elevation:10,
+      shadowColor:"black",
     },
     buttoncontainer:{
       flexDirection:"column",

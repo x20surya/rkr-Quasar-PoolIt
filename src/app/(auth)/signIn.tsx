@@ -97,12 +97,12 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 2,
     borderColor: 'rgba(240, 240, 230, 1)',
-  
+    elevation:10,
+    shadowColor:"black",
   },
   container: {
     flex: 1,
     flexDirection: "column",
-    // justifyContent: 'space-around',
     alignItems: 'center',
   },
   titleContainer: {
@@ -134,6 +134,8 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     borderRadius: 20,
     marginBottom: 0,
+    elevation:5,
+    shadowColor:"black",
   },
   signInButton: {
     backgroundColor: '#77B0AA',

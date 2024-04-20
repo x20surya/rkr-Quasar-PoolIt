@@ -47,12 +47,14 @@ export default function UserProfile(){
                
             </View >
 
-            <View style={styles.ContentBox}>
-             
-                <Link href={'/about'} style={styles.linksbox}> <View  style={styles.linkcontainer}><Text style={styles.link}>About</Text></View></Link>
-                <Link href={'/savedLocations'} style={styles.linksbox}><View  style={styles.linkcontainer}><Text style={styles.link}>Saved locations</Text></View></Link>
-                <Link href={'/previousRides'} style={styles.linksbox}><View  style={styles.linkcontainer}><Text style={styles.link}>Previous Rides</Text></View></Link>
+            <View style={[styles.ContentBox]}>
+              <View>
+               <Link href={'/about'} style={styles.linksbox}> <View  style={[styles.linkcontainer,styles.elevation]}><Text style={styles.link}>About</Text></View></Link>
+                <Link href={'/savedLocations'} style={styles.linksbox}><View  style={[styles.linkcontainer,styles.elevation]}><Text style={styles.link}>Saved locations</Text></View></Link>
+                <Link href={'/previousRides'} style={styles.linksbox}><View  style={[styles.linkcontainer,styles.elevation]}><Text style={styles.link}>Previous Rides</Text></View></Link>
                 <Pressable onPress={signOut} style={styles.signoutContainer}><Text style={styles.signout}>Sign Out</Text></Pressable>
+              </View>
+                
          
             </View>
 
@@ -66,6 +68,7 @@ const styles = StyleSheet.create({
         flexDirection:"column",
         alignItems:"center",
         backgroundColor:"white",
+        
     },
     container:{
         
@@ -95,20 +98,30 @@ const styles = StyleSheet.create({
     },
 
      ContentBox:{
-     borderWidth:1,
-     borderColor:"rgba(240, 240, 230, 1)",
-     width:Dimensions.get('window').width *0.96,
-     justifyContent:"center",
-     alignItems:"center",
-     marginVertical:20,
-     padding:10,
-     borderRadius:20,
+        height:Dimensions.get('window').height *0.4,
+        width:Dimensions.get('window').width *0.91,
+        alignItems:"center",
+        justifyContent:"center",
+        backgroundColor: "white",
+        borderWidth:1,
+        marginVertical:20,
+        borderRadius:30,
+        borderColor:"rgba(240, 240, 230, 1)", 
+        elevation:10,
+        shadowColor:"black",
+    
      
+
+    },
+    elevation:{
+        elevation:7,
+        shadowColor:"black"
     },
     Contents:{
         color:"black",
         fontSize:25,
         marginVertical:10,
+       
     },
     linkcontainer:{
        justifyContent:"center", 
@@ -117,10 +130,9 @@ const styles = StyleSheet.create({
        backgroundColor:"#77B0AA",
        width:Dimensions.get('window').width *0.85,
        borderRadius:20,
-
     },
     linksbox:{
-        marginVertical:14,
+        marginVertical:15,
     },
 
     link:{
@@ -133,11 +145,10 @@ const styles = StyleSheet.create({
         height:50,
         borderWidth:2,
         borderColor:"black",
-        // backgroundColor:"#61677A",
         width:Dimensions.get('window').width *0.85,
         borderRadius:20,
         marginVertical:14,
-
+       
     },
     signout:{
       fontSize:20,
