@@ -5,14 +5,14 @@ import { useNavigation } from "@react-navigation/native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import MapView, { Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import axios from "axios";
-
+import {FindingDrivers} from "./../../components/FindingDrivers"
 import * as Location from "expo-location";
 import { useContext, useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MapPassenger } from "@/src/components/MapPassenger";
-
+import ContentLoader, { Rect, Circle, Path } from "react-content-loader/native"
 
 
 
@@ -141,8 +141,6 @@ let nm2= state.pickupCords.name
   useEffect( ()=> {
     setTimeout(()=>{assignCurrentLocation();},1000)
     
-    
-    
   },[assignCurrentLocation])
 
 
@@ -171,7 +169,11 @@ let nm2= state.pickupCords.name
   // console.log("dropcords", droplocationCors);
   // console.log("cu", currentLocation);
 
-  const confirmBooking = ()=>
+
+//--------------------------------------------------------For Finding Drivers--------------------------------------------------------------
+
+
+  const confirmBooking = async ()=>
 {
   if(state.droplocationCors.name=="Enter Drop Off Location"){
     Alert.alert('Bhosdike', 'Destination Daal', [
@@ -185,12 +187,33 @@ let nm2= state.pickupCords.name
     Alert.alert('Nice', 'Ride Booked', [
       {
         text: 'Ok Papa',
-        onPress: () => console.log('Cancel Pressed'),
+        onPress: () => console.log(''),
         style: 'cancel',
       }])
+      console.log("latitude", state.pickupCords.latitude==0 ? ((Object.keys(currentLocation).length)>0? currentLocation.coords.latitude:0 ):state.pickupCords.latitude)
+      console.log("longitude", state.pickupCords.longitude==0 ? ((Object.keys(currentLocation).length)>0? currentLocation.coords.longitude:0 ):state.pickupCords.longitude)
+      console.log("destlat", state.droplocationCors.longitude)
+      console.log("destlong", state.droplocationCors.longitude)
+      await axios.post("http://192.168.29.196:3000/getdriver/1",{
+        latitude : state.pickupCords.latitude==0 ? ((Object.keys(currentLocation).length)>0? currentLocation.coords.latitude:0 ):state.pickupCords.latitude,
+        longitude : state.pickupCords.longitude==0 ? ((Object.keys(currentLocation).length)>0? currentLocation.coords.longitude:0 ):state.pickupCords.longitude,
+        lat : state.droplocationCors.latitude,
+        long: state.droplocationCors.longitude,
+      })
+      .then((r: { data: any; })=>{console.log(r.data)})
+      .catch((e)=>{console.log(e)})
 
   }
 }
+const cancelBooking =async ()=>{
+  setValidity(false);
+  console.log("Ride Cancelled")
+  await axios.post("http://192.168.29.196:3000/cancelride/1",{})
+          .then((r)=>{console.log(r.data)})
+          .catch((e)=>{console.log(e)})
+}
+
+
 
   return (
 
@@ -226,12 +249,33 @@ let nm2= state.pickupCords.name
             }}
           />
           <Button title="use current location" onPress={putCurrentLocation} />
+          <Button onPress={confirmBooking} title="Confirm Booking"/>
           </ScrollView>
+          
       </BottomSheet>}
       {validForBooking && !rideBooked && <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
+        <ScrollView>
             <Text>Finding Drivers</Text>
-        </BottomSheet>}
-      <Button onPress={confirmBooking} title="Confirm Booking"/>
+            {/* <ContentLoader 
+                speed={2}
+                width={400}
+                height={160}
+                viewBox="0 0 400 160"
+                backgroundColor="#f3f3f3"
+                foregroundColor="#ecebeb"
+              >
+    <Rect x="48" y="8" rx="3" ry="3" width="88" height="6" /> 
+    <Rect x="48" y="26" rx="3" ry="3" width="52" height="6" /> 
+    <Rect x="0" y="56" rx="3" ry="3" width="410" height="6" /> 
+    <Rect x="0" y="72" rx="3" ry="3" width="380" height="6" /> 
+    <Rect x="0" y="88" rx="3" ry="3" width="178" height="6" /> 
+    <Circle cx="20" cy="20" r="20" />
+  </ContentLoader> */}
+            <Button onPress={cancelBooking} title="Cancel Booking"/>
+          </ScrollView>
+        </BottomSheet>
+        }
+      
         {/* <Button title="close" onPress={handleClosePress}/>
         <Button title="open" onPress={handleOpenPress}/> */}
         

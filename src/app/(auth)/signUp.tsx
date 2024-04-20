@@ -22,7 +22,8 @@ import {
   
   export default function TabOneScreen() {
   
-    const [name, setName] = useState<string | undefined>();
+    const [firstname, setFirstName] = useState<string | undefined>();
+    const [lastname, setLastName] = useState<string | undefined>();
     const [email, setEmail] = useState<string | undefined>();
     const [password, setPassword] = useState<string | undefined>();
     const [phone, setPhone] = useState<string | undefined>();
@@ -31,10 +32,12 @@ import {
   
     const createProfile = async (response: FirebaseAuthTypes.UserCredential) => {
       // Create Profile Query Here
-      db().ref(`/users/${response.user.uid}`).set({name});
-      await axios.post("http://192.168.29.196:3000/login/",{
-            phone:"23232323",
-            email:"dummy@gmail.com"
+      db().ref(`/users/${response.user.uid}`).set({firstname});
+      await axios.post("http://192.168.29.196:3000/signup",{
+            firstname : firstname,
+            lastname : lastname,
+            email : email,
+            phone: phone,
           })
           .then((r)=>{console.log(r.data)})
           .catch((e)=>{console.log(e)})
@@ -73,9 +76,15 @@ import {
             <View style={styles.mainContent}>
               <TextInput
                 style={styles.loginTextField}
-                placeholder="Username"
-                value={name}
-                onChangeText={setName}
+                placeholder="Firstname"
+                value={firstname}
+                onChangeText={setFirstName}
+              />
+              <TextInput
+                style={styles.loginTextField}
+                placeholder="Lastname"
+                value={lastname}
+                onChangeText={setLastName}
               />
               <TextInput
                 style={styles.loginTextField}
