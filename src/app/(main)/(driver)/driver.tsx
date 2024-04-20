@@ -1,5 +1,5 @@
 import { Link, useNavigation } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Text, View } from "react-native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
@@ -8,6 +8,9 @@ import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplet
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import MapViewStyle from "../../../constants/MapViewStyle.json"
 import DriverMap from "@/src/components/DriverMap";
+import axios from "axios";
+import StartRide from "@/src/components/StartRide";
+import NearbyPassengers from "@/src/components/NearbyPassengers";
 
 export default function DriverScreen() {
   const [state, setState] = useState({
@@ -51,6 +54,8 @@ export default function DriverScreen() {
     },
   });
 
+  const [hasStartedRide, setHasStartedRide] = useState(false);
+
   const [currentLocation, setCurrentLocation] = useState({});
 
   const nav = useNavigation<NativeStackNavigationProp<any>>();
@@ -58,7 +63,18 @@ export default function DriverScreen() {
   async function putCurrentLocation() {
     let location = await Location.getCurrentPositionAsync({});
 
-    console.log("current location", location.coords);
+    setState({
+      ...state,
+      currentLocation: {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      },
+    });
+  }
+
+  async function getCurrentLocation() {
+    let location = await Location.getCurrentPositionAsync({});
+
 
     setState({
       ...state,
@@ -81,29 +97,27 @@ export default function DriverScreen() {
     });
   }
 
+  
+
+ function hasStartedRidefun(){
+  setHasStartedRide(true);
+ }
+ function hasStoppedRidefun(){
+  setHasStartedRide(false);
+ }
 
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginTop:50}}>
       <ScrollView 
       style={{ backgroundColor: "white" , flex:1}}
       keyboardShouldPersistTaps="handled"
       >
-        <GooglePlacesAutocomplete
-          placeholder="Enter Your Destination"
-          onPress={fetchDestination}
-          fetchDetails={true}
-          query={{
-            key: "AIzaSyA4IGQAa3lWLh2jy1gRqEjybQ5aAqVDKcg",
-            language: "en",
-          }}
-        />
-        
+      {!hasStartedRide && <StartRide fetchDestination={fetchDestination} hasStartedRidefun={hasStartedRidefun} />}
+      {hasStartedRide && <NearbyPassengers hasStoppedRidefun={hasStoppedRidefun} destinationCoords = {state.destinationCords}/>}
+      
       </ScrollView>
       <DriverMap latitude = {state.destinationCords.latitude} longitude = {state.destinationCords.longitude} />
-      <Link href={"/passengerFinder"} asChild>
-      <Button title="Find Passenger" />
-      </Link>
     </View>
   );
 }

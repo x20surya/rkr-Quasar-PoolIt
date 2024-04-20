@@ -3,6 +3,8 @@ import MapViewStyle from "../constants/MapViewStyle.json";
 import { useEffect, useRef, useState } from "react";
 import * as Location from "expo-location";
 import MapViewDirections from "react-native-maps-directions";
+import axios from "axios";
+import { Button, View } from "react-native";
 
 export default function DriverMap(props) {
   const [state, setState] = useState({
@@ -51,7 +53,6 @@ export default function DriverMap(props) {
   async function getCurrentLocation() {
     let location = await Location.getCurrentPositionAsync({});
 
-    console.log("current location", location.coords);
 
     setState({
       ...state,
@@ -69,8 +70,21 @@ export default function DriverMap(props) {
     return () => clearInterval(interval);
   });
 
+  async function fetchPassengers(){
+
+    await axios.post("http://192.168.29.196:3000/getpassenger/",{
+        latitude : state.currentLocation.latitude,
+        longitude : state.currentLocation.longitude,
+        lat : props.latitude,
+        long: props.longitude
+      })
+      .then((r)=>{console.log(JSON.stringify(r.data),r.data)})
+      .catch((e)=>{console.log(e)})
+}
+
   return (
-    <MapView
+    <View style={{flex:1}}>
+        <MapView
       style={{ width: "100%", height: "100%", flex: 1 }}
       ref={mapRef}
       provider={PROVIDER_GOOGLE}
@@ -116,8 +130,8 @@ export default function DriverMap(props) {
       }}
 
       />
-
-
     </MapView>
+    </View>
+    
   );
 }
