@@ -8,14 +8,17 @@ import {Link} from 'expo-router';
 export default function About(){
 
     return(
-        <View style={{backgroundColor:"white",flex:1}}>
-            <Link href={'/userProfile'} style={styles.backOption}>
-              <Image source={require('../../../../assets/images/back.png')} style={styles.svg}></Image>
-            </Link>
+        <View style={{backgroundColor:"#77B0AA",flex:1}}>
             <View style={styles.TitleContainer}>
-                 <Text style={styles.title}>Your Account Details : </Text>
+                    <Link href={'/userProfile'} style={styles.backOption}>
+                     <Image source={require('../../../../assets/images/backbtn.png')} style={styles.svg}></Image>
+                    </Link>
+                  <View >
+                       <Text style={styles.title}>Your Account Details : </Text>
+                  </View>
             </View>
-            <View >
+                  
+            <View style={styles.Textbox}>
                <View style={styles.textContainer}> 
                     <Text style={{color:"black",fontSize:20,padding:2}}>Name : </Text>
                     <Text style={{color:"#77B0AA",fontSize:18,fontWeight:"normal",}}>Mr Unknown</Text>
@@ -52,20 +55,22 @@ const styles =StyleSheet.create({
         paddingLeft:5,
     },   
     TitleContainer:{
-        alignItems:"center",
-        justifyContent:"center",
-        width:Dimensions.get('window').width *0.91,
-        height:Dimensions.get('window').height *0.15,
-        borderWidth:3,
-        borderColor:"#77B0AA",
-        borderRadius:40,
-        marginVertical:50,
-        marginHorizontal:10,
+      backgroundColor:"#77B0AA" ,
+      height:200,
         
     },
     title:{
-        color:"black",
+        color:"white",
         fontSize:38,
+        padding:30,
+    },
+    Textbox:{
+        flex:1,
+        backgroundColor:"white",
+        borderTopLeftRadius:20,
+        borderTopRightRadius:20,
+        marginVertical:10,
+
     },
 
  textContainer:{
