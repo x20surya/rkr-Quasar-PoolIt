@@ -33,7 +33,8 @@ import {
     const createProfile = async (response: FirebaseAuthTypes.UserCredential) => {
       // Create Profile Query Here
       db().ref(`/users/${response.user.uid}`).set({firstname});
-      await axios.post("http://192.168.29.196:3000/signup",{
+      await axios.post("http://192.168.17.226:3000/signup",{
+            uid : response.user.uid,
             firstname : firstname,
             lastname : lastname,
             email : email,
