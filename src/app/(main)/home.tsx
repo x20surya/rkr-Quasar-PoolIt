@@ -171,14 +171,22 @@ let nm2= state.pickupCords.name
 
 
 //--------------------------------------------------------For Finding Drivers--------------------------------------------------------------
-
+const [uid, setUid]= useState("")
+    useEffect(()=>{
+        auth().onAuthStateChanged((user) => {
+            if (user) {
+              console.log('User ', user.uid);
+              setUid(user.uid)
+            }
+        });
+    },[])
 
   const confirmBooking = async ()=>
 {
   if(state.droplocationCors.name=="Enter Drop Off Location"){
-    Alert.alert('Bhosdike', 'Destination Daal', [
+    Alert.alert('Error', 'Enter Destination', [
       {
-        text: 'Ok Papa',
+        text: 'Ok ',
         onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       }])
@@ -186,7 +194,7 @@ let nm2= state.pickupCords.name
     setValidity(true)
     Alert.alert('Nice', 'Ride Booked', [
       {
-        text: 'Ok Papa',
+        text: 'Ok',
         onPress: () => console.log(''),
         style: 'cancel',
       }])
@@ -194,25 +202,28 @@ let nm2= state.pickupCords.name
       console.log("longitude", state.pickupCords.longitude==0 ? ((Object.keys(currentLocation).length)>0? currentLocation.coords.longitude:0 ):state.pickupCords.longitude)
       console.log("destlat", state.droplocationCors.longitude)
       console.log("destlong", state.droplocationCors.longitude)
-      await axios.post("http://192.168.29.196:3000/getdriver/1",{
+      await axios.post("http://192.168.17.226:3000/getdriver/",{
         latitude : state.pickupCords.latitude==0 ? ((Object.keys(currentLocation).length)>0? currentLocation.coords.latitude:0 ):state.pickupCords.latitude,
         longitude : state.pickupCords.longitude==0 ? ((Object.keys(currentLocation).length)>0? currentLocation.coords.longitude:0 ):state.pickupCords.longitude,
         lat : state.droplocationCors.latitude,
         long: state.droplocationCors.longitude,
+        uid: uid
       })
       .then((r: { data: any; })=>{console.log(r.data)})
       .catch((e)=>{console.log(e)})
 
   }
 }
-const cancelBooking =async ()=>{
+const cancBooking =async ()=>{
+  console.log("Ride Cancelled Home")
   setValidity(false);
-  console.log("Ride Cancelled")
-  await axios.post("http://192.168.29.196:3000/cancelride/1",{})
-          .then((r)=>{console.log(r.data)})
-          .catch((e)=>{console.log(e)})
+  
 }
+const bookingConf =async ()=>{
+  console.log("Ride Confirmed home")
+  setBookingStatus(true)
 
+}
 
 
   return (
@@ -256,26 +267,18 @@ const cancelBooking =async ()=>{
       {validForBooking && !rideBooked && <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
         <ScrollView>
             <Text>Finding Drivers</Text>
-            {/* <ContentLoader 
-                speed={2}
-                width={400}
-                height={160}
-                viewBox="0 0 400 160"
-                backgroundColor="#f3f3f3"
-                foregroundColor="#ecebeb"
-              >
-    <Rect x="48" y="8" rx="3" ry="3" width="88" height="6" /> 
-    <Rect x="48" y="26" rx="3" ry="3" width="52" height="6" /> 
-    <Rect x="0" y="56" rx="3" ry="3" width="410" height="6" /> 
-    <Rect x="0" y="72" rx="3" ry="3" width="380" height="6" /> 
-    <Rect x="0" y="88" rx="3" ry="3" width="178" height="6" /> 
-    <Circle cx="20" cy="20" r="20" />
-  </ContentLoader> */}
-            <Button onPress={cancelBooking} title="Cancel Booking"/>
+            
+            
+            <FindingDrivers cancBooking={cancBooking} bookinkConf={bookingConf}/>
           </ScrollView>
         </BottomSheet>
         }
-      
+      {validForBooking && rideBooked && <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
+        <ScrollView>
+            <Text>Found Drivers</Text>
+          </ScrollView>
+        </BottomSheet>
+        }
         {/* <Button title="close" onPress={handleClosePress}/>
         <Button title="open" onPress={handleOpenPress}/> */}
         
