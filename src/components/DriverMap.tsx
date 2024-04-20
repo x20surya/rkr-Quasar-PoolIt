@@ -130,8 +130,6 @@ export default function DriverMap(props) {
       }}
 
       />
-
-
     </MapView>
     </View>
     

@@ -10,6 +10,7 @@ import MapViewStyle from "../../../constants/MapViewStyle.json"
 import DriverMap from "@/src/components/DriverMap";
 import axios from "axios";
 import StartRide from "@/src/components/StartRide";
+import NearbyPassengers from "@/src/components/NearbyPassengers";
 
 export default function DriverScreen() {
   const [state, setState] = useState({
@@ -53,6 +54,8 @@ export default function DriverScreen() {
     },
   });
 
+  const [hasStartedRide, setHasStartedRide] = useState(false);
+
   const [currentLocation, setCurrentLocation] = useState({});
 
   const nav = useNavigation<NativeStackNavigationProp<any>>();
@@ -94,18 +97,14 @@ export default function DriverScreen() {
     });
   }
 
-  async function fetchPassengers(){
+  
 
-    await axios.post("http://192.168.29.196:3000/getpassenger/",{
-        latitude : state.currentLocation.latitude,
-        longitude : state.currentLocation.longitude,
-        lat : state.destinationCords.latitude,
-        long: state.destinationCords.longitude
-      })
-      .then((r)=>{console.log(r.data)})
-      .catch((e)=>{console.log(e)})
-}
-
+ function hasStartedRidefun(){
+  setHasStartedRide(true);
+ }
+ function hasStoppedRidefun(){
+  setHasStartedRide(false);
+ }
 
 
   return (
@@ -114,14 +113,11 @@ export default function DriverScreen() {
       style={{ backgroundColor: "white" , flex:1}}
       keyboardShouldPersistTaps="handled"
       >
-      <StartRide fetchDestination={fetchDestination} />
+      {!hasStartedRide && <StartRide fetchDestination={fetchDestination} hasStartedRidefun={hasStartedRidefun} />}
+      {hasStartedRide && <NearbyPassengers hasStoppedRidefun={hasStoppedRidefun} destinationCoords = {state.destinationCords}/>}
       
       </ScrollView>
       <DriverMap latitude = {state.destinationCords.latitude} longitude = {state.destinationCords.longitude} />
-      <Link href={"/passengerFinder"} asChild>
-      <Button title="Find Passenger page" />
-      </Link>
-      <Button title="Find Passenger" onPress={fetchPassengers}/>
     </View>
   );
 }

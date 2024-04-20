@@ -234,7 +234,7 @@ let nm2= state.pickupCords.name
       <Button onPress={confirmBooking} title="Confirm Booking"/>
         {/* <Button title="close" onPress={handleClosePress}/>
         <Button title="open" onPress={handleOpenPress}/> */}
-        <Button title="use current location" onPress={putCurrentLocation} />
+        
       </GestureHandlerRootView>
     )
   );
