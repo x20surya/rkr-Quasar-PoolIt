@@ -49,9 +49,9 @@ export default function UserProfile(){
 
             <View style={[styles.ContentBox]}>
               <View>
-               <Link href={'/about'} style={styles.linksbox}> <View  style={[styles.linkcontainer,styles.elevation]}><Text style={styles.link}>About</Text></View></Link>
-                <Link href={'/savedLocations'} style={styles.linksbox}><View  style={[styles.linkcontainer,styles.elevation]}><Text style={styles.link}>Saved locations</Text></View></Link>
-                <Link href={'/previousRides'} style={styles.linksbox}><View  style={[styles.linkcontainer,styles.elevation]}><Text style={styles.link}>Previous Rides</Text></View></Link>
+               <Link href={'/about'} style={styles.linksbox}> <View  style={[styles.linkcontainer]}><Text style={styles.link}>About</Text></View></Link>
+                <Link href={'/savedLocations'} style={styles.linksbox}><View  style={[styles.linkcontainer]}><Text style={styles.link}>Saved locations</Text></View></Link>
+                <Link href={'/previousRides'} style={styles.linksbox}><View  style={[styles.linkcontainer]}><Text style={styles.link}>Previous Rides</Text></View></Link>
                 <Pressable onPress={signOut} style={styles.signoutContainer}><Text style={styles.signout}>Sign Out</Text></Pressable>
               </View>
                 
@@ -107,16 +107,12 @@ const styles = StyleSheet.create({
         marginVertical:20,
         borderRadius:30,
         borderColor:"rgba(240, 240, 230, 1)", 
-        elevation:10,
-        shadowColor:"black",
+       
     
      
 
     },
-    elevation:{
-        elevation:7,
-        shadowColor:"black"
-    },
+   
     Contents:{
         color:"black",
         fontSize:25,

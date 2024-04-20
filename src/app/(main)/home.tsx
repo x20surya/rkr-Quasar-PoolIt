@@ -13,7 +13,7 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { MapPassenger } from "@/src/components/MapPassenger";
 import ContentLoader, { Rect, Circle, Path } from "react-content-loader/native"
-
+import { StyleSheet } from "react-native";
 
 
 
@@ -207,7 +207,7 @@ const [uid, setUid]= useState("")
         longitude : state.pickupCords.longitude==0 ? ((Object.keys(currentLocation).length)>0? currentLocation.coords.longitude:0 ):state.pickupCords.longitude,
         lat : state.droplocationCors.latitude,
         long: state.droplocationCors.longitude,
-        uid: uid
+        uid: uid,
       })
       .then((r: { data: any; })=>{console.log(r.data)})
       .catch((e)=>{console.log(e)})
@@ -241,6 +241,7 @@ const bookingConf =async ()=>{
           style={{backgroundColor:'white'}}
           keyboardShouldPersistTaps="handled"
           >
+            <Text style={styles.lableInputField}>Enter Pickup Location</Text>
           <GooglePlacesAutocomplete
             placeholder={state.pickupCords.name}
             fetchDetails={true}
@@ -250,6 +251,7 @@ const bookingConf =async ()=>{
               language: "en",
             }}
           />
+          <Text style={styles.lableInputField}>Enter Drop Location</Text>
           <GooglePlacesAutocomplete
             placeholder={state.droplocationCors.name}
             fetchDetails={true}
@@ -285,4 +287,12 @@ const bookingConf =async ()=>{
       </GestureHandlerRootView>
     )
   );
+
 }
+
+const styles = StyleSheet.create({
+  lableInputField:{
+    color: 'blue',
+  }
+
+})
