@@ -30,7 +30,6 @@ export function FindingDrivers(props){
                 .catch((e)=>{console.log(e)})
       }
 
-const [driverFound, setDriverStatus]= useState(false);
 const {cancBooking, bookingConf}= props
     useEffect(()=>{
         const interval = setInterval(async ()=>{
@@ -39,17 +38,15 @@ const {cancBooking, bookingConf}= props
             })
             .then((r)=>{
                 console.log(r.data)
-                if(r.data.status){
-                setDriverStatus(false)}
+                if(r.data.Status=="true"){
+                    bookingConf()
+                    clearInterval(interval);
+                }
                 
             })
             .catch((e)=>{console.log(e)})
             console.log(1)
-            if(driverFound){
-                bookingConf()
-                clearInterval(interval);
-
-            }
+            
             if(!valid){
                 clearInterval(interval);
             }
