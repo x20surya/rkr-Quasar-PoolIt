@@ -146,7 +146,6 @@ export default function NearbyPassengers(props) {
         <Text>phone : {confirmedpassengerinfo[3]}</Text>
         <Button title="complete ride" onPress={props.hasStoppedRidefun} />
       </ScrollView>}
-      
     </View>
   );
 }

@@ -1,16 +1,18 @@
 import { Link, useNavigation } from "expo-router";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Button, Text, View } from "react-native";
 import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import * as Location from "expo-location";
 import { ScrollView } from "react-native-virtualized-view";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
-import MapViewStyle from "../../../constants/MapViewStyle.json"
+import MapViewStyle from "../../../constants/MapViewStyle.json";
 import DriverMap from "@/src/components/DriverMap";
 import axios from "axios";
 import StartRide from "@/src/components/StartRide";
 import NearbyPassengers from "@/src/components/NearbyPassengers";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
+import BottomSheet from "@gorhom/bottom-sheet";
 
 export default function DriverScreen() {
   const [state, setState] = useState({
@@ -58,6 +60,13 @@ export default function DriverScreen() {
 
   const [currentLocation, setCurrentLocation] = useState({});
 
+  const bottomSheetRef = useRef<BottomSheet>(null);
+
+  const handleClosePress = () => bottomSheetRef.current?.close();
+  const handleMnimizePress = () => bottomSheetRef.current?.snapToIndex(0);
+  const handleOpenPress = () => bottomSheetRef.current?.expand();
+  const snapPoints = useMemo(() => ["25%", "50%", "75%", "100%"], []);
+
   const nav = useNavigation<NativeStackNavigationProp<any>>();
 
   async function putCurrentLocation() {
@@ -74,7 +83,6 @@ export default function DriverScreen() {
 
   async function getCurrentLocation() {
     let location = await Location.getCurrentPositionAsync({});
-
 
     setState({
       ...state,
@@ -97,27 +105,38 @@ export default function DriverScreen() {
     });
   }
 
-  
-
- function hasStartedRidefun(){
-  setHasStartedRide(true);
- }
- function hasStoppedRidefun(){
-  setHasStartedRide(false);
- }
-
+  function hasStartedRidefun() {
+    setHasStartedRide(true);
+  }
+  function hasStoppedRidefun() {
+    setHasStartedRide(false);
+  }
 
   return (
-    <View style={{ flex: 1, marginTop:50}}>
-      <ScrollView 
-      style={{ backgroundColor: "white" , flex:1}}
-      keyboardShouldPersistTaps="handled"
+    <GestureHandlerRootView style={{ flex: 1, marginTop: 50 }}>
+      <DriverMap
+        latitude={state.destinationCords.latitude}
+        longitude={state.destinationCords.longitude}
+      />
+      <BottomSheet ref={bottomSheetRef} index={1} snapPoints={snapPoints}>
+      <ScrollView
+        style={{ backgroundColor: "white", flex: 1 }}
+        keyboardShouldPersistTaps="handled"
       >
-      {!hasStartedRide && <StartRide fetchDestination={fetchDestination} hasStartedRidefun={hasStartedRidefun} />}
-      {hasStartedRide && <NearbyPassengers hasStoppedRidefun={hasStoppedRidefun} destinationCoords = {state.destinationCords}/>}
-      
+        {!hasStartedRide && (
+          <StartRide
+            fetchDestination={fetchDestination}
+            hasStartedRidefun={hasStartedRidefun}
+          />
+        )}
+        {hasStartedRide && (
+          <NearbyPassengers
+            hasStoppedRidefun={hasStoppedRidefun}
+            destinationCoords={state.destinationCords}
+          />
+        )}
       </ScrollView>
-      <DriverMap latitude = {state.destinationCords.latitude} longitude = {state.destinationCords.longitude} />
-    </View>
+      </BottomSheet>
+    </GestureHandlerRootView>
   );
 }
